@@ -85,5 +85,18 @@ Order BY Sum(repository_size) DESC
 ```
 ![image](https://github.com/Chakkz0206/Chakkz0206/assets/131430244/64f1d0f2-b902-4ad1-b82e-fdc6fb777d09)
 
+10. Find out the top five platforms which have the highest number of dependent repositories.
+```SQL
+With Projects as 
+(SELECT p.platform, pr.repository_id, pr.repository_size, pr.dependent_repositories_count
+FROM `bigquery-public-data.libraries_io.projects` p
+Left join `bigquery-public-data.libraries_io.projects_with_repository_fields` pr
+on p.repository_id = pr.repository_id)
+SELECT platform, SUM(dependent_repositories_count) as `Total number of dependent repositories` from Projects
+GROUP BY platform
+Order BY Sum(dependent_repositories_count) DESC
+LIMIT 5
+```
+![image](https://github.com/Chakkz0206/Chakkz0206/assets/131430244/e955609f-7552-4777-a25f-9ced200f5912)
 
 
